@@ -4,12 +4,12 @@ public class Simplex {
 
 	private Tableau t;
 	
-//	private String pivotRule 	= "dantzig";
+	private String pivotRule 	= "dantzig";
 	//private String pivotRule 	= "largestIncrease";
-	private String pivotRule 	= "bland";
+	//private String pivotRule 	= "bland";
 	
-	//private String method		= "dual";
 	private String method		= "auxiliary";
+  //private String method		= "dual";
 
 	// values for printUpdate
 	private int iteration = 1;
@@ -18,12 +18,31 @@ public class Simplex {
 	private int updateFreq = 1;
 	private String compType = "";
 
-	public Simplex(String filename){
-		
-
-		// creates initial tableau
+  public Simplex(String filename, String... args){
+    // creates initial tableau
 		t = new Tableau(filename);
 		
+    // Parse arguments
+    if(args.length>0) {
+        for(int arg = 0; arg < args.length ; arg++) {
+            String[] current_arg = args[arg].split("=");
+            if(current_arg[0].equalsIgnoreCase("pivotrule")) {
+                this.pivotRule = current_arg[1];
+            } else if(current_arg[0].equalsIgnoreCase("method")) {
+                this.method = current_arg[1];
+            } else {
+                if(arg == 0) {
+                    this.pivotRule = args[0];
+                } else {
+                    this.method = args[1];
+                }
+            }
+        }
+    }
+
+    System.out.printf("Using pivot rule: %s\n", this.pivotRule);
+    System.out.printf("Using method: %s\n\n", this.method);
+
 		System.out.println("initial tableau");
 		t.dumpTableau();
 
